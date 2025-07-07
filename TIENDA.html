@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PERU GAME - TIENDA</title>
+
+  <!-- Bootstrap CSS y Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;700&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(180deg, #0f0f1a 0%, #121212 100%);
+      color: #fff;
+    }
+    .text-cyan { color: #00ffff; }
+    .text-purple { color: #9c27b0; }
+    .text-pink { color: #ff0266; }
+    a:hover { color: #00ffff !important; text-shadow: 0 0 5px #00ffff; }
+    .nav-center a:hover, .nav-right a:hover { color: #00ffff !important; }
+    .product-card { background-color: #1e1e1e; border: 1px solid #00ffff; border-radius: 10px; overflow: hidden; transition: transform 0.3s; }
+    .product-card:hover { transform: scale(1.02); }
+    .product-img { width: 100%; height: 200px; object-fit: cover; }
+    .product-details { padding: 15px; }
+    .cart-list { max-height: 300px; overflow-y: auto; }
+    .dropdown-menu { background-color: #1e1e1e; color: white; }
+    .dropdown-menu .dropdown-item { color: white; }
+    .dropdown-menu .dropdown-item:hover { background-color: #00ffff; color: black; }
+    .category-filter.active { background-color: #00ffff !important; color: #000 !important; font-weight: bold; animation: pulse 1s infinite alternate; }
+    @keyframes pulse { from { box-shadow: 0 0 5px #00ffff; } to { box-shadow: 0 0 15px #00ffff; } }
+    .modal-product { background-color: #111; color: #fff; border: 2px solid #00ffff; border-radius: 10px; }
+    .modal-product-header { border-bottom: 1px solid #00ffff; }
+    .modal-product img { max-height: 100px; object-fit: cover; }
+    .modal-product-info p span { font-weight: bold; color: #00ffff; }
+    .modal-content { background-color: #1e1e1e; color: white; }
+    .modal-header { border-bottom: 1px solid #00ffff; }
+    .modal-title { color: #00ffff; }
+    .form-control { background-color: #121212; color: white; border: 1px solid #00ffff; }
+    .form-control:focus { border-color: #00ffff; box-shadow: 0 0 0 0.25rem rgba(0, 255, 255, 0.25); }
+    .badge-counter {
+      position: absolute;
+      top: -5px;
+      right: -10px;
+      background-color: #ff0266;
+      color: white;
+      border-radius: 50%;
+      padding: 2px 6px;
+      font-size: 12px;
+    }
+    footer {
+      background-color: #0d0d0d;
+      border-top: 2px solid #00ffff;
+      color: #ccc;
+      padding: 40px 20px;
+    }
+    footer h4 { color: #00ffff; }
+    footer ul { list-style: none; padding: 0; }
+    footer ul li { margin-bottom: 10px; }
+    footer a { color: #ccc; text-decoration: none; }
+    footer a:hover { color: #00ffff; text-shadow: 0 0 5px #00ffff; }
+    .footer-bottom {
+      text-align: center;
+      padding: 10px;
+      background-color: #000;
+      color: #888;
+      border-top: 1px solid #00ffff;
+    }
+  </style>
+</head>
+<body>
+
+<header class="bg-dark border-bottom border-info shadow-sm py-3 px-4 d-flex flex-wrap justify-content-between align-items-center">
+  <div class="logo">
+    <h1 class="m-0"><a href="index.html" class="text-cyan text-decoration-none">🎮 PERU GAME</a></h1>
+  </div>
+  <nav class="nav-center d-flex gap-4 justify-content-center flex-grow-1">
+    <a href="TIENDA.html" class="text-white text-decoration-none fw-bold"><i class="bi bi-controller"></i> TIENDA</a>
+    <a href="NOTICIAS.html" class="text-white text-decoration-none fw-bold"><i class="bi bi-newspaper"></i> NOTICIAS</a>
+    <a href="ASISTENCIA.html" class="text-white text-decoration-none fw-bold"><i class="bi bi-question-circle"></i> ASISTENCIA</a>
+  </nav>
+  <div class="nav-right d-flex align-items-center gap-3 fs-4 position-relative">
+    <div id="cartSection">
+      <a href="#" class="text-white text-decoration-none position-relative" id="cartIcon">
+        <i class="bi bi-cart3 fs-4"></i>
+        <span class="badge-counter" id="cartCount">0</span>
+      </a>
+    </div>
+<div id="userSection">
+  <button class="btn btn-outline-info" data-bs-toggle="modal" data-bs-target="#loginModal">
+    <i class="bi bi-person-circle"></i>
+  </button>
+</div>
+  </div>
+  <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content bg-dark text-white border border-info">
+      <div class="modal-header border-info">
+        <h5 class="modal-title text-cyan" id="loginModalLabel"><i class="bi bi-person-circle"></i> Iniciar Sesión</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+      </div>
+      <div class="modal-body">
+        <form id="loginForm">
+          <div class="mb-3">
+            <label for="email" class="form-label text-info">Correo Electrónico</label>
+            <input type="email" class="form-control bg-black text-white border-info" id="email" required>
+          </div>
+          <div class="mb-3">
+            <label for="password" class="form-label text-info">Contraseña</label>
+            <input type="password" class="form-control bg-black text-white border-info" id="password" required>
+          </div>
+          <div class="d-grid">
+            <button type="submit" class="btn btn-info text-dark fw-bold">Iniciar Sesión</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+</header>
+
+<main class="container py-5" id="mainContent">
+  <!-- Aquí se insertarán categorías, buscador, productos, y modales -->
+  <div class="mb-4 d-flex justify-content-between align-items-center">
+    <div class="d-flex flex-wrap gap-2" id="categoryList">
+      <button class="btn btn-outline-info category-filter active" data-category="Todos">Todos</button>
+      <button class="btn btn-outline-info category-filter" data-category="RPG">RPG</button>
+      <button class="btn btn-outline-info category-filter" data-category="Acción">Acción</button>
+      <button class="btn btn-outline-info category-filter" data-category="Aventura">Aventura</button>
+      <button class="btn btn-outline-info category-filter" data-category="Deportes">Deportes</button>
+      <button class="btn btn-outline-info category-filter" data-category="Terror">Terror</button>
+    </div>
+    <div class="input-group w-50">
+      <input type="text" class="form-control" placeholder="Buscar juegos..." id="searchInput">
+      <button class="btn btn-info text-dark fw-bold" id="searchBtn"><i class="bi bi-search"></i></button>
+    </div>
+  </div>
+
+  <div class="row" id="productContainer">
+    <!-- Productos se cargarán aquí dinámicamente con JavaScript -->
+  </div>
+</main>
+
+<footer class="bg-dark text-secondary py-5 border-top border-info">
+  <div class="container">
+    <div class="row g-4">
+      <div class="col-md-4">
+        <h4 class="text-cyan">PERU GAME</h4>
+        <p>Tu portal gamer favorito para estar al día con los últimos lanzamientos, noticias y soporte técnico en Perú.</p>
+      </div>
+      <div class="col-md-2">
+        <h5 class="text-cyan">FORMAS DE PAGO</h5>
+          <ul class="list-unstyled">
+            <li><a href="#" class="text-white text-decoration-none d-flex align-items-center payment-icon"><i class="bi bi-bank2 me-2 text-cyan"></i> BCP</a></li>
+            <li><a href="#" class="text-white text-decoration-none d-flex align-items-center payment-icon"><i class="bi bi-phone me-2 text-purple"></i> YAPE</a></li>
+            <li><a href="#" class="text-white text-decoration-none d-flex align-items-center payment-icon"><i class="bi bi-phone-vibrate me-2 text-pink"></i> PLIN</a></li>
+            <li><a href="#" class="text-white text-decoration-none d-flex align-items-center payment-icon"><i class="bi bi-credit-card-2-front me-2 text-warning"></i> Mastercard</a></li>
+            <li><a href="#" class="text-white text-decoration-none d-flex align-items-center payment-icon"><i class="bi bi-credit-card me-2 text-info"></i> Visa</a></li>
+          </ul>
+      </div>
+      <div class="col-md-2">
+        <h5 class="text-cyan">INFORMACIÓN</h5>
+        <ul class="list-unstyled">
+          <li><a href="#" class="text-secondary text-decoration-none">Nosotros</a></li>
+          <li><a href="#" class="text-secondary text-decoration-none">¿Cómo comprar?</a></li>
+          <li><a href="#" class="text-secondary text-decoration-none">Preguntas frecuentes</a></li>
+        </ul>
+      </div>
+      <div class="col-md-2">
+        <h5 class="text-cyan">ENLACES</h5>
+        <ul class="list-unstyled">
+          <li><a href="#" class="text-secondary text-decoration-none">Libro de reclamaciones</a></li>
+          <li><a href="#" class="text-secondary text-decoration-none">Sugerencias</a></li>
+        </ul>
+      </div>
+      <div class="col-md-2">
+        <h5 class="text-cyan">SÍGUENOS</h5>
+        <ul class="list-unstyled">
+          <li><a href="#" class="text-secondary text-decoration-none"><i class="bi bi-twitter"></i> Twitter</a></li>
+          <li><a href="#" class="text-secondary text-decoration-none"><i class="bi bi-facebook"></i> Facebook</a></li>
+          <li><a href="#" class="text-secondary text-decoration-none"><i class="bi bi-instagram"></i> Instagram</a></li>
+          <li><a href="#" class="text-secondary text-decoration-none"><i class="bi bi-discord"></i> Discord</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</footer>
+<div class="text-center bg-black text-secondary py-3">
+  &copy; 2025 PERU GAME. Todos los derechos reservados.
+</div>
+
+
+<!-- SCRIPTS MAS IMPORTANTES DE LA TIENDA -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  function comprarProducto(id) {
+  const producto = productos.find(p => p.id === id);
+
+  // CERAR Y REMONBRAR CUALQUIER MODELO DEL PRODUCTO
+  const oldModal = document.getElementById("modalCompraProducto");
+  if (oldModal) oldModal.remove();
+
+  // CREAR MODELO DE PRODUCTO
+  const modalDiv = document.createElement("div");
+  modalDiv.className = "modal fade";
+  modalDiv.id = "modalCompraProducto";
+  modalDiv.innerHTML = `
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content bg-dark text-white border border-info">
+        <div class="modal-header border-info">
+          <h5 class="modal-title text-cyan">Detalles de compra</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <div class="text-center mb-3">
+            <img src="${producto.imagen}" class="img-fluid rounded shadow" alt="${producto.nombre}" style="max-height: 200px;" />
+          </div>
+          <ul class="list-group bg-black">
+            <li class="list-group-item bg-black text-white border-info"><strong>Nombre:</strong> ${producto.nombre}</li>
+            <li class="list-group-item bg-black text-white border-info"><strong>Precio:</strong> S/ ${producto.precio.toFixed(2)}</li>
+            <li class="list-group-item bg-black text-white border-info"><strong>Descripción:</strong> ${producto.descripcion}</li>
+            <li class="list-group-item bg-black text-white border-info"><strong>Fecha de lanzamiento:</strong> ${producto.fecha}</li>
+          </ul>
+        </div>
+        <div class="modal-footer border-info">
+          <button class="btn btn-success"><i class="bi bi-check-circle"></i> Confirmar compra</button>
+          <button class="btn btn-outline-light" data-bs-dismiss="modal">Cancelar</button>
+        </div>
+      </div>
+    </div>
+  `;
+  document.body.appendChild(modalDiv);
+
+  const modal = new bootstrap.Modal(modalDiv);
+  modal.show();
+}
+</script>
+<script>
+// Aquí se insertarán todos los scripts de productos, login, carrito, modales, búsqueda y filtros
+// Datos de productos
+const productos = [
+  {
+    id: 1,
+    nombre: "Elden Ring",
+    categoria: "RPG",
+    imagen: "img/Elden_Ring.jpg",
+    precio: 199.99,
+    descripcion: "Una aventura oscura en un mundo abierto.",
+    fecha: "2022-02-25"
+  },
+  {
+    id: 2,
+    nombre: "FIFA 24",
+    categoria: "Deportes",
+    imagen: "img/FIFA_24.jpg",
+    precio: 149.99,
+    descripcion: "El mejor simulador de fútbol del mundo.",
+    fecha: "2024-09-15"
+  },
+  {
+    id: 3,
+    nombre: "Resident Evil Village",
+    categoria: "Terror",
+    imagen: "img/Resident_Evil_Village.png",
+    precio: 129.99,
+    descripcion: "Horror de supervivencia al siguiente nivel.",
+    fecha: "2021-05-07"
+  },
+  {
+    id: 4,
+    nombre: "God of War Ragnarok",
+    categoria: "Acción",
+    imagen: "img/God_of_War_Ragnarok.webp",
+    precio: 179.99,
+    descripcion: "Una épica batalla de dioses y monstruos.",
+    fecha: "2022-11-09"
+  },
+  {
+    id: 5,
+    nombre: "Zelda: Breath of the Wild",
+    categoria: "Aventura",
+    imagen: "img/Zelda: Breath of the Wild.jpg",
+    precio: 189.99,
+    descripcion: "Explora un mundo lleno de misterios y magia.",
+    fecha: "2017-03-03"
+  }
+];
+
+function mostrarProductos(lista) {
+  const contenedor = document.getElementById("productContainer");
+  contenedor.innerHTML = "";
+  lista.forEach(p => {
+    const col = document.createElement("div");
+    col.className = "col-md-4 mb-4";
+    col.innerHTML = `
+      <div class="product-card">
+        <img src="${p.imagen}" alt="${p.nombre}" class="product-img" />
+        <div class="product-details">
+          <h5>${p.nombre}</h5>
+          <p>${p.descripcion}</p>
+          <p class="text-info">S/ ${p.precio.toFixed(2)}</p>
+          <div class="d-flex justify-content-between align-items-center">
+            <button class="btn btn-success btn-sm" onclick="comprarProducto(${p.id})"><i class="bi bi-cash-coin"></i> Comprar</button>
+            <button class="btn btn-outline-info btn-sm" onclick="agregarAlCarrito(${p.id})"><i class="bi bi-cart-plus"></i> Agregar</button>
+          </div>
+        </div>
+      </div>
+    `;
+    contenedor.appendChild(col);
+  });
+}
+mostrarProductos(productos);
+
+document.querySelectorAll(".category-filter").forEach(btn => {
+  btn.addEventListener("click", () => {
+    document.querySelectorAll(".category-filter").forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+    const categoria = btn.getAttribute("data-category");
+    if (categoria === "Todos") {
+      mostrarProductos(productos);
+    } else {
+      const filtrados = productos.filter(p => p.categoria === categoria);
+      mostrarProductos(filtrados);
+    }
+  });
+});
+
+document.getElementById("searchBtn").addEventListener("click", () => {
+  const texto = document.getElementById("searchInput").value.toLowerCase();
+  const filtrados = productos.filter(p => p.nombre.toLowerCase().includes(texto));
+  mostrarProductos(filtrados);
+});
+
+let carrito = [];
+function eliminarDelCarrito(index) {
+  carrito.splice(index, 1);
+  actualizarCarrito();
+}
+
+function agregarAlCarrito(id) {
+  const producto = productos.find(p => p.id === id);
+  carrito.push(producto);
+  actualizarCarrito();
+}
+
+function actualizarCarrito() {
+  document.getElementById("cartCount").innerText = carrito.length;
+
+  // CERAR EL MODELO DEL CARRITO SI YA ESTA ABIERTO
+  const existingModalEl = document.getElementById("carritoModal");
+  if (existingModalEl) {
+    const existingModal = bootstrap.Modal.getInstance(existingModalEl);
+    if (existingModal) existingModal.hide();
+    existingModalEl.remove();
+  }
+
+  // NUEVO MODAL DEL CARRITO
+  const modalCarrito = document.createElement("div");
+  modalCarrito.className = "modal fade";
+  modalCarrito.id = "carritoModal";
+  modalCarrito.innerHTML = `
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content modal-product p-3">
+        <div class="modal-header modal-product-header">
+          <h5 class="modal-title">Tu Carrito</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          ${carrito.length === 0 ? '<p>No hay productos en el carrito.</p>' : ''}
+          <div class="row">
+            ${carrito.map((item, index) => `
+              <div class="col-md-4 mb-3">
+                <div class="card bg-dark text-white h-100">
+                  <img src="${item.imagen}" class="card-img-top" alt="${item.nombre}" style="height:150px; object-fit:cover;">
+                  <div class="card-body">
+                    <h5 class="card-title">${item.nombre}</h5>
+                    <p class="card-text">${item.descripcion}</p>
+                    <p class="text-info">S/ ${item.precio.toFixed(2)}</p>
+                    <button class="btn btn-sm btn-danger mt-2" onclick="eliminarDelCarrito(${index})">
+                      <i class="bi bi-trash"></i> Eliminar
+                    </button>
+                  </div>
+                </div>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-success"><i class="bi bi-cash"></i> Proceder a pagar</button>
+          <button class="btn btn-outline-light" data-bs-dismiss="modal">Cerrar</button>
+        </div>
+      </div>
+    </div>
+  `;
+  document.body.appendChild(modalCarrito);
+
+  // Mostrar el nuevo modal
+  const modal = new bootstrap.Modal(modalCarrito);
+  modal.show();
+}
+function eliminarDelCarrito(index) {
+  carrito.splice(index, 1);
+  actualizarCarrito();
+}
+</script>
+<script>
+document.getElementById("loginForm").addEventListener("submit", function (e) {
+  e.preventDefault();
+  const email = document.getElementById("email").value.trim();
+  const color = getRandomColor();
+  sessionStorage.setItem("userEmail", email);
+  sessionStorage.setItem("userColor", color);
+
+  setUserSection(email, color);
+  const modal = bootstrap.Modal.getInstance(document.getElementById('loginModal'));
+  modal.hide();
+});
+</script>
+<script>
+function getRandomColor() {
+  const colors = ['#00ffff', '#9c27b0', '#ff0266', '#ffc107', '#03a9f4'];
+  return colors[Math.floor(Math.random() * colors.length)];
+}
+function setUserSection(email, color) {
+  const initial = email.charAt(0).toUpperCase();
+  const userSection = document.getElementById("userSection");
+
+  userSection.innerHTML = `
+    <div class="dropdown">
+      <button class="btn btn-sm fw-bold fs-5 dropdown-toggle" style="background-color: ${color}; color: #000; border-radius: 50%; width: 40px; height: 40px;" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+        ${initial}
+      </button>
+      <ul class="dropdown-menu dropdown-menu-end">
+        <li><a class="dropdown-item" href="#" id="infoBtn">Info de cuenta</a></li>
+        <li><a class="dropdown-item text-danger" href="#" id="logoutBtn">Cerrar sesión</a></li>
+      </ul>
+    </div>
+  `;
+
+  document.getElementById("infoBtn").addEventListener("click", () => {
+    alert("Correo: " + email);
+  });
+
+  document.getElementById("logoutBtn").addEventListener("click", () => {
+    sessionStorage.clear();
+    location.reload();
+  });
+}
+
+function loadUserSession() {
+  const email = sessionStorage.getItem("userEmail");
+  const color = sessionStorage.getItem("userColor");
+  if (email && color) {
+    setUserSection(email, color);
+  }
+}
+
+document.addEventListener("DOMContentLoaded", loadUserSession);
+</script>
+</html>
+
+
+
+
