@@ -294,6 +294,8 @@ function mostrarProductos(lista) {
   lista.forEach(p => {
     const col = document.createElement("div");
     col.className = "col-md-4 mb-4";
+    col.id = `producto${p.id}`; // <--- Esto es lo importante
+
     col.innerHTML = `
       <div class="product-card">
         <img src="${p.imagen}" alt="${p.nombre}" class="product-img" />
@@ -459,8 +461,21 @@ function loadUserSession() {
 
 document.addEventListener("DOMContentLoaded", loadUserSession);
 </script>
+<script>
+window.addEventListener("load", () => {
+  const hash = window.location.hash;
+  if (hash.startsWith("#producto")) {
+    const id = parseInt(hash.replace("#producto", ""));
+    if (!isNaN(id)) {
+      setTimeout(() => {
+        const targetElement = document.getElementById(`producto${id}`);
+        if (targetElement) {
+          targetElement.scrollIntoView({ behavior: "smooth", block: "center" });
+        }
+        comprarProducto(id);
+      }, 300); // Espera a que se cargue todo
+    }
+  }
+});
+</script>
 </html>
-
-
-
-
