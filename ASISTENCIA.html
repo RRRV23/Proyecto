@@ -12,6 +12,51 @@
       background: linear-gradient(180deg, #0f0f1a 0%, #121212 100%);
       color: #fff;
     }
+
+    .text-cyan {
+  color: #00ffff;
+}
+
+a:hover {
+  color: #00ffff !important;
+  text-shadow: 0 0 5px #00ffff;
+}
+
+.logo-glow {
+  text-shadow: 0 0 10px #00ffff;
+}
+
+.navbar {
+  padding: 0.8rem 1rem;
+}
+
+.navbar-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+#userSection {
+  position: absolute;
+  right: 1rem;
+  top: 0.75rem;
+}
+
+.dropdown-menu {
+  background-color: #fff;
+  color: #000;
+  border-color: #00ffff44;
+}
+
+.dropdown-menu .dropdown-item {
+  color: #000;
+  transition: color 0.3s ease;
+}
+
+.dropdown-menu .dropdown-item:hover {
+  background-color: transparent;
+  color: #00ffff;
+}
     .text-cyan { color: #00ffff; }
     a:hover {
       color: #00ffff !important;
@@ -21,26 +66,51 @@
       background-color: #000;
       color: #fff;
     }
+
+@media (max-width: 991.98px) {
+  #userSection {
+    position: static;
+    margin-left: auto;
+    margin-top: 0.5rem;
+  }
+}
+
+.navbar-toggler {
+  border: 1px solid #00ffff;
+  box-shadow: 0 0 10px #00ffff;
+}
+
+.navbar-toggler-icon {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba(0, 255, 255, 1)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+  filter: drop-shadow(0 0 6px #00ffff);
+}
   </style>
 </head>
 <body>
   <!-- HEADER-->
-  <header class="bg-dark border-bottom border-info shadow-sm py-3 px-4 d-flex flex-wrap justify-content-between align-items-center">
-    <div class="logo">
-      <h1 class="m-0"><a href="index.html" class="text-cyan text-decoration-none">🎮 PERU GAME</a></h1>
-    </div>
-    <nav class="nav-center d-flex gap-4 justify-content-center flex-grow-1">
-      <a href="TIENDA.html" class="text-white text-decoration-none fw-bold"><i class="bi bi-controller"></i> TIENDA</a>
-      <a href="NOTICIAS.html" class="text-white text-decoration-none fw-bold"><i class="bi bi-newspaper"></i> NOTICIAS</a>
-      <a href="#" class="text-white text-decoration-none fw-bold"><i class="bi bi-question-circle"></i> ASISTENCIA</a>
-    </nav>
-    <div class="nav-right d-flex align-items-center gap-3 fs-4">
-      <div id="userSection">
-        <a href="#" class="text-white text-decoration-none" title="Login" data-bs-toggle="modal" data-bs-target="#loginModal">
-          <i class="bi bi-person-circle fs-4"></i>
-        </a>
+  <header class="bg-dark border-bottom border-info shadow-sm">
+    <nav class="navbar navbar-expand-lg navbar-dark container-fluid">
+      <button class="navbar-toggler d-lg-none" type="button" data-bs-toggle="collapse" data-bs-target="#menuNav" aria-controls="menuNav" aria-expanded="false" aria-label="Menú">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <a href="index.html" class="navbar-brand text-cyan fw-bold fs-4 logo-glow mx-auto mx-lg-0">
+        <i class="bi bi-controller"></i> PERU GAME
+      </a>
+      <div id="userSection" class="ms-auto"></div>
+      <div class="collapse navbar-collapse justify-content-center mt-2 mt-lg-0" id="menuNav">
+        <ul class="navbar-nav gap-4 text-center text-lg-start">
+          <li class="nav-item">
+            <a class="nav-link fw-bold text-white" href="TIENDA.html"><i class="bi bi-bag"></i> TIENDA</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link fw-bold text-white" href="NOTICIAS.html"><i class="bi bi-newspaper"></i> NOTICIAS</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link fw-bold text-white" href="ASISTENCIA.html"><i class="bi bi-question-circle"></i> ASISTENCIA</a>
+          </li>
+        </ul>
       </div>
-    </div>
+    </nav>
   </header>
 
   <!-- CONTENIDO ASISTENCIA -->
@@ -148,44 +218,153 @@
   <div class="text-center bg-black text-secondary py-3">
     &copy; 2025 PERU GAME. Todos los derechos reservados.
   </div>
-
-  <!-- SCRIPT del LOGIN -->
+<!-- MODAL LOGIN -->
+<div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content bg-dark text-white border border-info">
+      <div class="modal-header border-info">
+        <h5 class="modal-title text-cyan" id="loginModalLabel"><i class="bi bi-person-circle"></i> Iniciar Sesión</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+      </div>
+      <div class="modal-body">
+        <form id="loginForm">
+          <div class="mb-3">
+            <label for="email" class="form-label text-info">Correo Electrónico</label>
+            <input type="email" class="form-control bg-black text-white border-info" id="email" placeholder="ejemplo@mail.com" required>
+          </div>
+          <div class="mb-3">
+            <label for="password" class="form-label text-info">Contraseña</label>
+            <input type="password" class="form-control bg-black text-white border-info" id="password" placeholder="Tu contraseña secreta" required>
+          </div>
+          <div class="d-grid">
+            <button type="submit" class="btn btn-info text-dark fw-bold">Iniciar Sesión</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+  <!-- MODAL INFO DE CUENTA -->
+<div class="modal fade" id="infoModal" tabindex="-1" aria-labelledby="infoModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content bg-dark text-white border border-info">
+      <div class="modal-header border-info">
+        <h5 class="modal-title text-cyan" id="infoModalLabel"><i class="bi bi-person-lines-fill"></i> Información de Cuenta</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+      </div>
+      <div class="modal-body">
+        <p><strong class="text-info">Correo Electrónico:</strong> <span id="userEmailDisplay"></span></p>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- MODAL CONFIRMAR CIERRE DE SESIÓN -->
+<div class="modal fade" id="logoutConfirmModal" tabindex="-1" aria-labelledby="logoutConfirmLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content bg-dark text-white border border-danger">
+      <div class="modal-header border-danger">
+        <h5 class="modal-title text-danger" id="logoutConfirmLabel"><i class="bi bi-box-arrow-right"></i> Cerrar Sesión</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+      </div>
+      <div class="modal-body">
+        ¿Estás seguro que deseas cerrar sesión?
+      </div>
+      <div class="modal-footer border-danger">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-danger" id="confirmLogoutBtn">Cerrar sesión</button>
+      </div>
+    </div>
+  </div>
+</div>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-  <script>
-    function getRandomColor() {
-      const colors = ['#00ffff', '#9c27b0', '#ff0266', '#ffc107', '#03a9f4'];
-      return colors[Math.floor(Math.random() * colors.length)];
-    }
-    function setUserSection(email, color) {
-      const initial = email.charAt(0).toUpperCase();
-      const userSection = document.getElementById("userSection");
-      userSection.innerHTML = `
-        <div class="dropdown">
-          <button class="btn btn-sm fw-bold fs-5 dropdown-toggle" style="background-color: ${color}; color: #000; border-radius: 50%; width: 40px; height: 40px;" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-            ${initial}
-          </button>
-          <ul class="dropdown-menu dropdown-menu-end">
-            <li><a class="dropdown-item" href="#" id="infoBtn">Info de cuenta</a></li>
-            <li><a class="dropdown-item text-danger" href="#" id="logoutBtn">Cerrar sesión</a></li>
-          </ul>
-        </div>
-      `;
-      document.getElementById("infoBtn").addEventListener("click", () => {
-        alert("Correo: " + email);
-      });
-      document.getElementById("logoutBtn").addEventListener("click", () => {
-        sessionStorage.clear();
-        location.reload();
-      });
-    }
-    function loadUserSession() {
-      const email = sessionStorage.getItem("userEmail");
-      const color = sessionStorage.getItem("userColor");
-      if (email && color) {
-        setUserSection(email, color);
+<script>
+function getRandomColor() {
+  const colors = ['#00ffff', '#9c27b0', '#ff0266', '#ffc107', '#03a9f4'];
+  return colors[Math.floor(Math.random() * colors.length)];
+}
+
+function cleanUpModalBackdrops() {
+  document.body.classList.remove('modal-open');
+  document.querySelectorAll('.modal-backdrop').forEach(el => el.remove());
+}
+
+function setUserSession(email) {
+  const color = getRandomColor();
+  sessionStorage.setItem("userEmail", email);
+  sessionStorage.setItem("userColor", color);
+  updateUserSection(email, color);
+}
+
+function updateUserSection(email, color) {
+  const initial = email.charAt(0).toUpperCase();
+  const userSection = document.getElementById("userSection");
+  userSection.innerHTML = `
+    <div class="dropdown">
+      <button class="btn btn-sm fw-bold fs-5 dropdown-toggle" style="background-color: ${color}; color: #000; border-radius: 50%; width: 40px; height: 40px;" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+        ${initial}
+      </button>
+      <ul class="dropdown-menu dropdown-menu-end">
+        <li><a class="dropdown-item" href="#" id="infoBtn">Info de cuenta</a></li>
+        <li><a class="dropdown-item text-danger" href="#" id="logoutBtn">Cerrar sesión</a></li>
+      </ul>
+    </div>
+  `;
+
+  document.getElementById("infoBtn").addEventListener("click", () => {
+    document.getElementById("userEmailDisplay").textContent = email;
+    new bootstrap.Modal(document.getElementById('infoModal')).show();
+  });
+
+  document.getElementById("logoutBtn").addEventListener("click", () => {
+    const logoutModal = new bootstrap.Modal(document.getElementById('logoutConfirmModal'));
+    logoutModal.show();
+    document.getElementById("confirmLogoutBtn").onclick = () => {
+      sessionStorage.clear();
+      loadUserSession();
+      cleanUpModalBackdrops();
+      logoutModal.hide();
+    };
+  });
+}
+
+function loadUserSession() {
+  const email = sessionStorage.getItem("userEmail");
+  const color = sessionStorage.getItem("userColor");
+  const userSection = document.getElementById("userSection");
+  if (email && color) {
+    updateUserSection(email, color);
+  } else {
+    userSection.innerHTML = `
+      <a href="#" class="text-white text-decoration-none" title="Iniciar sesión" data-bs-toggle="modal" data-bs-target="#loginModal" id="loginIcon">
+        <i class="bi bi-person-circle fs-4"></i>
+      </a>
+    `;
+  }
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  loadUserSession();
+  const loginForm = document.getElementById("loginForm");
+  if (loginForm) {
+    loginForm.addEventListener("submit", function (e) {
+      e.preventDefault();
+      const email = document.getElementById("email").value.trim();
+      const password = document.getElementById("password").value.trim();
+      if (!email.includes("@") || !email.includes(".")) {
+        alert("Por favor, introduce un correo válido.");
+        return;
       }
-    }
-    document.addEventListener("DOMContentLoaded", loadUserSession);
-  </script>
+      if (password.length < 3) {
+        alert("La contraseña debe tener al menos 3 caracteres.");
+        return;
+      }
+      setUserSession(email);
+      const modalEl = document.getElementById('loginModal');
+      bootstrap.Modal.getOrCreateInstance(modalEl).hide();
+      setTimeout(cleanUpModalBackdrops, 500);
+    });
+  }
+});
+</script>
 </body>
 </html>
